@@ -1,27 +1,26 @@
 import { AuthRepository } from "./auth.repository.interface";
 import * as admin from 'firebase-admin';
-
-export class FirebaseAuthError extends Error{
-    constructor(error:any){
-        super(error.message)
-        this.name = 'FirebaseAuthError'
-    }
-}
-
-export class FirebaseGoogleAplicationsCredentialsVarError extends Error{
-    constructor(){
-        super()
-        this.name = 'FirebaseGoogleAplicationsCredentialsVarError'
-    }
-}
+import { FirebaseGoogleAplicationsCredentialsVarError } from "./errors";
+import { FirebaseAuthCreateUser } from "./firebase.repository.dto";
 
 export class FirebaseAuthRepository implements AuthRepository{
-    
     auth:any
     constructor(){
         if(!this.isGoogleAplicationsCredentialsVarSetted()){
             throw new FirebaseGoogleAplicationsCredentialsVarError
         }
+    }
+    async findUserByUuid(uuid: string): Promise<any> {
+        const auth:any = await this.getAuth()
+        return auth.getUser(uuid)
+    }
+    async findUserByEmail(email: string): Promise<any> {
+        const auth:any = await this.getAuth()
+        return auth.getUserByEmail(email)
+    }
+    async listUsers(): Promise<any> {
+        const auth:any = await this.getAuth()
+        return auth.listUsers()
     }
     isGoogleAplicationsCredentialsVarSetted():boolean{
         return process.env.GOOGLE_APPLICATION_CREDENTIALS ? true:false
@@ -30,27 +29,17 @@ export class FirebaseAuthRepository implements AuthRepository{
         await admin.initializeApp()
     }
     async getAuth(): Promise<any> {
-        return await admin.auth()
+        return admin.auth()
     }
-    async findUserByEmail(email: string): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
-    async save(model: any): Promise<void> {
+    async save(model: FirebaseAuthCreateUser): Promise<void> {
         const auth:any = await this.getAuth()
-        return await auth.createUser({
-                email: 'user2@example.com',
-                emailVerified: false,
-                phoneNumber: '+112345678902',
-                password: 'secretPassword',
-                displayName: 'John Doe',
-                photoURL: 'http://www.example.com/12345678/photo.png',
-                disabled: false,
-            })
-            
-        
+        return auth.createUser(model)
     }
     async exists(model: any): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
-
+    async remove(uid: any): Promise<void> {
+        const auth:any = await this.getAuth()
+        await auth.deleteUser(uid)
+    }
 }
