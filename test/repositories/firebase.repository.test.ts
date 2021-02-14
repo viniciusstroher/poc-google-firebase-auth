@@ -1,9 +1,10 @@
-import { FirebaseAuthRepository } from "@root/src/repositories/auth/firebase.auth.repository"
+import { FirebaseAuthError, FirebaseAuthRepository } from "@root/src/repositories/auth/firebase.auth.repository"
 
 describe('Firebase Repository Test', () => {
     let firebaseAuthRepository:FirebaseAuthRepository
-    beforeAll(() => {
+    beforeAll(async() => {
         firebaseAuthRepository = new FirebaseAuthRepository()
+        await firebaseAuthRepository.initializeService()
     })
     it('should exists env GOOGLE_APPLICATION_CREDENTIALS', async () => {
         expect(process.env.GOOGLE_APPLICATION_CREDENTIALS).toBeDefined()
@@ -12,7 +13,7 @@ describe('Firebase Repository Test', () => {
         expect(firebaseAuthRepository).toBeDefined()
     })
     it('should create user in firebase auth', async () => {
-        expect(firebaseAuthRepository.save({})).toBeDefined()
+        await expect(async() => firebaseAuthRepository.save({})).rejects.toThrow()
     })
     
 })
