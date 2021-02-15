@@ -1,45 +1,31 @@
 import { AuthRepository } from "./auth.repository.interface";
-import * as admin from 'firebase-admin';
-import { FirebaseGoogleAplicationsCredentialsVarError } from "./errors";
-import { FirebaseAuthCreateUser } from "./firebase.repository.dto";
+import { FirebaseAuthUpsertUser } from "./firebase.repository.dto";
+import { FirebaseHelper } from "./firebase.helper";
 
 export class FirebaseAuthRepository implements AuthRepository{
-    auth:any
-    constructor(){
-        if(!this.isGoogleAplicationsCredentialsVarSetted()){
-            throw new FirebaseGoogleAplicationsCredentialsVarError
-        }
+    firebaseHelper:FirebaseHelper
+    constructor(firebaseHelper:FirebaseHelper){
+        this.firebaseHelper = firebaseHelper
     }
     async findUserByUuid(uuid: string): Promise<any> {
-        const auth:any = await this.getAuth()
-        return auth.getUser(uuid)
+        return await this.firebaseHelper.getUserById(uuid)
     }
     async findUserByEmail(email: string): Promise<any> {
-        const auth:any = await this.getAuth()
-        return auth.getUserByEmail(email)
+        return await this.firebaseHelper.getUserByEmail(email)
     }
     async listUsers(): Promise<any> {
-        const auth:any = await this.getAuth()
-        return auth.listUsers()
+        return await this.firebaseHelper.listUsers()
     }
-    isGoogleAplicationsCredentialsVarSetted():boolean{
-        return process.env.GOOGLE_APPLICATION_CREDENTIALS ? true:false
+    async insert(model: FirebaseAuthUpsertUser): Promise<void> {
+        return await this.firebaseHelper.createUser(model)
     }
-    async initializeService(){
-        await admin.initializeApp()
-    }
-    async getAuth(): Promise<any> {
-        return admin.auth()
-    }
-    async save(model: FirebaseAuthCreateUser): Promise<void> {
-        const auth:any = await this.getAuth()
-        return auth.createUser(model)
+    async update(uid:string, model: FirebaseAuthUpsertUser): Promise<void> {
+        return await this.firebaseHelper.upateUser(uid, model)
     }
     async exists(model: any): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
     async remove(uid: any): Promise<void> {
-        const auth:any = await this.getAuth()
-        await auth.deleteUser(uid)
+        return await this.firebaseHelper.deleteUser(uid)
     }
 }
