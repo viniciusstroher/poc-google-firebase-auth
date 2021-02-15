@@ -48,6 +48,22 @@ export class FirebaseHelper{
         const auth:any = await this.getAuth()
         return auth.deleteUser(uid)
     }
+    async generateToken(uid: any): Promise<void>{
+        const auth:any = await this.getAuth()
+        return auth.createCustomToken(uid)
+    }
+    async revokeToken(uid: any): Promise<void>{
+        const auth:any = await this.getAuth()
+        return auth.revokeRefreshTokens(uid)
+    }
+    async verifyToken(token: any): Promise<void>{
+        const auth:any = await this.getAuth()
+        return auth.verifyIdToken(token)
+    }
+    async signIn(token: any): Promise<void>{
+        const auth:any = await this.getAuth()
+        return auth.signInWithCustomToken(token)
+    }
  }
 
 
