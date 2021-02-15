@@ -22,9 +22,6 @@ export class FirebaseUserRepository implements UserRepository{
     async update(uid:string, model: FirebaseUserUpsertUser): Promise<void> {
         return await this.firebaseHelper.upateUser(uid, model)
     }
-    async exists(model: any): Promise<boolean> {
-        throw new Error("Method not implemented.");
-    }
     async remove(uid: any): Promise<void> {
         return await this.firebaseHelper.deleteUser(uid)
     }
