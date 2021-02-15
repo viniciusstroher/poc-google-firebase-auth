@@ -1,8 +1,8 @@
-import { AuthRepository } from "./auth.repository.interface";
-import { FirebaseAuthUpsertUser } from "./firebase.repository.dto";
-import { FirebaseHelper } from "./firebase.helper";
+import { UserRepository } from "@app/repositories/user/user.repository.interface";
+import { FirebaseUserUpsertUser } from "@app/common/firebase.repository.dto";
+import { FirebaseHelper } from "@app/common/firebase.helper";
 
-export class FirebaseAuthRepository implements AuthRepository{
+export class FirebaseUserRepository implements UserRepository{
     firebaseHelper:FirebaseHelper
     constructor(firebaseHelper:FirebaseHelper){
         this.firebaseHelper = firebaseHelper
@@ -16,10 +16,10 @@ export class FirebaseAuthRepository implements AuthRepository{
     async listUsers(): Promise<any> {
         return await this.firebaseHelper.listUsers()
     }
-    async insert(model: FirebaseAuthUpsertUser): Promise<void> {
+    async insert(model: FirebaseUserUpsertUser): Promise<void> {
         return await this.firebaseHelper.createUser(model)
     }
-    async update(uid:string, model: FirebaseAuthUpsertUser): Promise<void> {
+    async update(uid:string, model: FirebaseUserUpsertUser): Promise<void> {
         return await this.firebaseHelper.upateUser(uid, model)
     }
     async exists(model: any): Promise<boolean> {

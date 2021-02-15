@@ -1,4 +1,4 @@
-export type FirebaseAuthUpsertUser = {
+export type FirebaseUserUpsertUser = {
     email:string
     emailVerified:boolean
     phoneNumber:string

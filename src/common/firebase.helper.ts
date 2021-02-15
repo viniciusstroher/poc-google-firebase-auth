@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
-import { FirebaseGoogleAplicationsCredentialsVarError } from "./errors"
-import { FirebaseAuthUpsertUser } from './firebase.repository.dto';
- export class FirebaseHelper{
+import { FirebaseUserUpsertUser } from './firebase.repository.dto';
+
+export class FirebaseHelper{
     static instance:FirebaseHelper
     private constructor(){
         if(!this.isGoogleAplicationsCredentialsVarSetted()){
@@ -36,11 +36,11 @@ import { FirebaseAuthUpsertUser } from './firebase.repository.dto';
         const auth:any = await this.getAuth()
         return auth.listUsers()
     }
-    async createUser(model:FirebaseAuthUpsertUser): Promise<void>{
+    async createUser(model:FirebaseUserUpsertUser): Promise<void>{
         const auth:any = await this.getAuth()
         return auth.createUser(model)
     }
-    async upateUser(uid:string, model:FirebaseAuthUpsertUser): Promise<void>{
+    async upateUser(uid:string, model:FirebaseUserUpsertUser): Promise<void>{
         const auth:any = await this.getAuth()
         return auth.updateUser(uid, model)
     }
@@ -49,3 +49,11 @@ import { FirebaseAuthUpsertUser } from './firebase.repository.dto';
         return auth.deleteUser(uid)
     }
  }
+
+
+export class FirebaseGoogleAplicationsCredentialsVarError extends Error{
+    constructor(){
+        super()
+        this.name = 'FirebaseGoogleAplicationsCredentialsVarError'
+    }
+}
