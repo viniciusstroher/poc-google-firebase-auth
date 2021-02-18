@@ -1,10 +1,10 @@
 import { UserRepository } from "@app/repositories/user/user.repository.interface";
 import { FirebaseUserUpsertUser } from "@app/common/firebase.repository.dto";
-import { FirebaseHelper } from "@app/common/firebase.helper";
+import { FirebaseAdminHelper } from "@root/src/common/firebase-admin.helper";
 
 export class FirebaseUserRepository implements UserRepository{
-    firebaseHelper:FirebaseHelper
-    constructor(firebaseHelper:FirebaseHelper){
+    firebaseHelper:FirebaseAdminHelper
+    constructor(firebaseHelper:FirebaseAdminHelper){
         this.firebaseHelper = firebaseHelper
     }
     async findUserByUuid(uuid: string): Promise<any> {

@@ -1,13 +1,11 @@
 import { FirebaseUserRepository } from "@app/repositories/user/firebase.user.repository"
-import { FirebaseHelper } from "@app/common/firebase.helper";
-import { FirebaseUserUpsertUser } from "@app/common/firebase.repository.dto"
-import * as faker from 'faker';
+import { FirebaseAdminHelper } from "@root/src/common/firebase-admin.helper";
 import { FirabaseAuthTokenService } from "@root/src/services/auth/firabase.auth.token.service";
 import { firebaseUserMock } from "../firebase.user.mock";
 
 describe('Firebase User Service Test', () => {
     let firabaseAuthTokenService:FirabaseAuthTokenService
-    let firebaseHelper:FirebaseHelper
+    let firebaseHelper:FirebaseAdminHelper
     let firebaseUserRepository:FirebaseUserRepository
     let creatNewUserDataMock:any
     let creatNewUserMock:any
@@ -21,7 +19,7 @@ describe('Firebase User Service Test', () => {
     }
 
     beforeAll(async() => {
-        const firebaseHelper:FirebaseHelper = await FirebaseHelper.getInstance()
+        const firebaseHelper:FirebaseAdminHelper = await FirebaseAdminHelper.getInstance()
         firabaseAuthTokenService = new FirabaseAuthTokenService(firebaseHelper)
         firebaseUserRepository = new FirebaseUserRepository(firebaseHelper)
 

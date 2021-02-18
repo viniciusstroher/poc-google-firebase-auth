@@ -1,5 +1,5 @@
 import { FirebaseUserRepository } from "@app/repositories/user/firebase.user.repository"
-import { FirebaseHelper } from "@app/common/firebase.helper";
+import { FirebaseAdminHelper } from "@root/src/common/firebase-admin.helper";
 import { FirebaseUserUpsertUser } from "@app/common/firebase.repository.dto"
 import * as faker from 'faker';
 
@@ -24,7 +24,7 @@ describe('Firebase User Repository Test', () => {
     }
 
     beforeAll(async() => {
-        const firebaseHelper:FirebaseHelper = await FirebaseHelper.getInstance()
+        const firebaseHelper:FirebaseAdminHelper = await FirebaseAdminHelper.getInstance()
         firebaseUserRepository = new FirebaseUserRepository(firebaseHelper)
         createNewUser = firebaseUserMock()
         console.log(createNewUser)

@@ -1,19 +1,19 @@
 import * as admin from 'firebase-admin';
 import { FirebaseUserUpsertUser } from './firebase.repository.dto';
 
-export class FirebaseHelper{
-    static instance:FirebaseHelper
+export class FirebaseAdminHelper{
+    static instance:FirebaseAdminHelper
     private constructor(){
         if(!this.isGoogleAplicationsCredentialsVarSetted()){
             throw new FirebaseGoogleAplicationsCredentialsVarError
         }
     }
     static async getInstance(){
-        if(!FirebaseHelper.instance){
-            FirebaseHelper.instance = new FirebaseHelper()
-            await FirebaseHelper.instance.initializeService()
+        if(!FirebaseAdminHelper.instance){
+            FirebaseAdminHelper.instance = new FirebaseAdminHelper()
+            await FirebaseAdminHelper.instance.initializeService()
         }
-        return FirebaseHelper.instance
+        return FirebaseAdminHelper.instance
     }
     isGoogleAplicationsCredentialsVarSetted():boolean{
         return process.env.GOOGLE_APPLICATION_CREDENTIALS ? true:false

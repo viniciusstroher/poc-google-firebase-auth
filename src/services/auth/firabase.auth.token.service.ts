@@ -1,7 +1,7 @@
-import { FirebaseHelper } from "@root/src/common/firebase.helper"
+import { FirebaseAdminHelper } from "@root/src/common/firebase-admin.helper"
 export class FirabaseAuthTokenService{
-    firebaseHelper:FirebaseHelper
-    constructor(firebaseHelper:FirebaseHelper){
+    firebaseHelper:FirebaseAdminHelper
+    constructor(firebaseHelper:FirebaseAdminHelper){
         this.firebaseHelper = firebaseHelper
     }
     async generateToken(uid: any): Promise<string>{
