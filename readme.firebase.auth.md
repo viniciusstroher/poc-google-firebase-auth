@@ -8,3 +8,9 @@ npm i firebase-admin
 - [ ] Clicar "Adicionar aplicativo" e depois "Adicionar aplication"
 - [ ] Ir em contas de serviço e em "SDK Admin do Firebase" clicar "Gerar nova chave privada" e baixar o json
 - [ ] Renomear json para service-account-file.json e colocar na pasta config.
+
+
+
+
+Para fazer authenticação é necessario um sdk de client para usar os metodos
+de signInWithCustomToken

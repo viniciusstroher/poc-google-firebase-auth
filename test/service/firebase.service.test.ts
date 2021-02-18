@@ -7,50 +7,40 @@ import { firebaseUserMock } from "../firebase.user.mock";
 
 describe('Firebase User Service Test', () => {
     let firabaseAuthTokenService:FirabaseAuthTokenService
-    let createNewUser:any
-    
+    let firebaseHelper:FirebaseHelper
+    let firebaseUserRepository:FirebaseUserRepository
+    let creatNewUserDataMock:any
+    let creatNewUserMock:any
+
+    const createUser = async (firebaseUserRepository:FirebaseUserRepository, createNewUser:any) =>{
+        await firebaseUserRepository.insert(createNewUser)
+        return await firebaseUserRepository.findUserByEmail(createNewUser.email)
+    }
+    const deleteUser = async (firebaseUserRepository:FirebaseUserRepository, uid:string) => {
+        await firebaseUserRepository.remove(uid)
+    }
+
     beforeAll(async() => {
         const firebaseHelper:FirebaseHelper = await FirebaseHelper.getInstance()
         firabaseAuthTokenService = new FirabaseAuthTokenService(firebaseHelper)
-        createNewUser = firebaseUserMock()
-        console.log(createNewUser)
+        firebaseUserRepository = new FirebaseUserRepository(firebaseHelper)
+
+        creatNewUserDataMock = firebaseUserMock()
+        creatNewUserMock = await createUser(firebaseUserRepository, creatNewUserDataMock)
+        console.log(creatNewUserMock)
+    })
+    afterAll(async() => {
+        await deleteUser(firebaseUserRepository, creatNewUserMock.uid)
     })
     it('should instantiate service without exceptions', async () => {
         expect(firabaseAuthTokenService).toBeDefined()
     })
-    // it('should not find user by email in firebase auth', async () => {
-    //     await expect(async() => firebaseUserRepository.findUserByEmail(createNewUser.email)).rejects.toThrow()
-    // })
-    // it('should create user in firebase auth', async () => {
-    //     await firebaseUserRepository.insert(createNewUser)
-    //     const userFirebase:any = await firebaseUserRepository.findUserByEmail(createNewUser.email)
-    //     expect(userFirebase).toHaveProperty('uid')
-    // })
-    // it('should find user by email in firebase auth', async () => {
-    //     const userFirebase:any = await firebaseUserRepository.findUserByEmail(createNewUser.email)
-    //     expect(userFirebase).toHaveProperty('uid')
-    // })
-    // it('should delete user by email in firebase auth', async () => {
-    //     const userFirebase:any = await firebaseUserRepository.findUserByEmail(createNewUser.email)
-    //     await firebaseUserRepository.remove(userFirebase.uid)
-    //     await expect(async() => firebaseUserRepository.findUserByEmail(createNewUser.email)).rejects.toThrow()
-    // })
-    // it('should update user by email in firebase auth', async () => {
-    //     let userFirebase:any
-    //     let createUpdateUser = firebaseUserMock()
-    //     await firebaseUserRepository.insert(createUpdateUser)
-    //     userFirebase = await firebaseUserRepository.findUserByEmail(createUpdateUser.email)
-
-    //     createUpdateUser.displayName += `${createNewUser.displayName}@@`
-    //     await firebaseUserRepository.update(userFirebase.uid, createUpdateUser)
-        
-    //     userFirebase = await firebaseUserRepository.findUserByEmail(createUpdateUser.email)
-        
-    //     await firebaseUserRepository.remove(userFirebase.uid)
-    //     expect(userFirebase.displayName).toBe(createUpdateUser.displayName)
-    // })
-    // it('should list user by email in firebase auth', async () => {
-    //     expect(async() => await firebaseUserRepository.listUsers()).toBeDefined()
-    // })
-    
+    it('should not throw except when call generateToken', async () => {
+        expect(async() => await firabaseAuthTokenService.generateToken(creatNewUserMock.uid)).not.toThrow()
+    })
+    it('should not throw except when call revokeToken', async () => {
+        const token:string = await firabaseAuthTokenService.generateToken(creatNewUserMock.uid)
+        expect(token).not.toBe(null)
+        expect(async() => await firabaseAuthTokenService.revokeToken(creatNewUserMock.uid)).not.toThrow()
+    })    
 })
