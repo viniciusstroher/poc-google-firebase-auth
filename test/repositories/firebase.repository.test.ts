@@ -1,28 +1,12 @@
 import { FirebaseUserRepository } from "@app/repositories/user/firebase.user.repository"
 import { FirebaseAdminHelper } from "@root/src/common/firebase-admin.helper";
-import { FirebaseUserUpsertUser } from "@app/common/firebase.repository.dto"
-import * as faker from 'faker';
+import { firebaseUserMock } from "../firebase.user.mock";
+
 
 describe('Firebase User Repository Test', () => {
     let firebaseUserRepository:FirebaseUserRepository
     let createNewUser:any
-    let firebaseUserMock = ():FirebaseUserUpsertUser => {
-        let phoneNumber:string = `+55${faker.phone.phoneNumber('###########')}`
-        let email:string = `${faker.name.lastName().toLowerCase()}${phoneNumber.replace("+","_")}@${faker.phone.phoneNumber("#####")}-inc.com`
-        let displayName:string = faker.name.findName()
-        let password:string = `${phoneNumber}+@Aa`
-        
-        return {
-            email,
-            emailVerified: false,
-            phoneNumber,
-            password,
-            displayName,
-            photoURL: 'http://www.example.com/12345678/photo.png',
-            disabled: false,
-        } 
-    }
-
+    
     beforeAll(async() => {
         const firebaseHelper:FirebaseAdminHelper = await FirebaseAdminHelper.getInstance()
         firebaseUserRepository = new FirebaseUserRepository(firebaseHelper)
