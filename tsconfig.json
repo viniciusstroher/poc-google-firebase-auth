@@ -9,6 +9,7 @@
     "rootDir" : "./",
     "paths": {
       "@root/*": ["./*"],
+      "@config/*": ["./config/*"],
       "@app/*": ["./src/*"],
       "@test/*": ["./test/*"]
     }

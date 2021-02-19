@@ -1,5 +1,5 @@
 import { FirebaseAdminHelper } from "@root/src/common/firebase-admin.helper"
-export class FirabaseAuthTokenService{
+export class FirebaseAdminAuthenticationService{
     firebaseHelper:FirebaseAdminHelper
     constructor(firebaseHelper:FirebaseAdminHelper){
         this.firebaseHelper = firebaseHelper
