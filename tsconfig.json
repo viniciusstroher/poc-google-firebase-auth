@@ -7,6 +7,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "rootDir" : "./",
+    "resolveJsonModule": true,
     "paths": {
       "@root/*": ["./*"],
       "@config/*": ["./config/*"],
